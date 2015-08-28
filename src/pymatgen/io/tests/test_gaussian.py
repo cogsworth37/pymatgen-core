@@ -1,4 +1,6 @@
 # coding: utf-8
+# Copyright (c) Pymatgen Development Team.
+# Distributed under the terms of the MIT License.
 
 from __future__ import division, unicode_literals
 
@@ -18,7 +20,7 @@ import unittest
 import os
 
 from pymatgen import Molecule
-from pymatgen.io.gaussianio import GaussianInput, GaussianOutput
+from pymatgen.io.gaussian import GaussianInput, GaussianOutput
 
 test_dir = os.path.join(os.path.dirname(__file__), "..", "..", "..",
                         'test_files', "molecules")

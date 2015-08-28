@@ -1,4 +1,6 @@
 # coding: utf-8
+# Copyright (c) Pymatgen Development Team.
+# Distributed under the terms of the MIT License.
 
 from __future__ import division, unicode_literals
 
@@ -21,7 +23,7 @@ import warnings
 
 from pymatgen.util.testing import PymatgenTest
 from pymatgen.core.physical_constants import BOLTZMANN_CONST
-from pymatgen.io.vaspio.vasp_input import Incar, Poscar, Kpoints, Potcar, \
+from pymatgen.io.vasp.inputs import Incar, Poscar, Kpoints, Potcar, \
     PotcarSingle, VaspInput
 from pymatgen import Composition, Structure
 from monty.io import zopen
@@ -360,6 +362,13 @@ class KpointsTest(unittest.TestCase):
         filepath = os.path.join(test_dir, 'KPOINTS.explicit')
         kpoints = Kpoints.from_file(filepath)
         self.assertIsNotNone(kpoints.kpts_weights)
+        self.assertEqual(str(kpoints).strip(), """Example file
+4
+Cartesian
+0.0 0.0 0.0 1 None
+0.0 0.0 0.5 1 None
+0.0 0.5 0.5 2 None
+0.5 0.5 0.5 4 None""")
 
         filepath = os.path.join(test_dir, 'KPOINTS.explicit_tet')
         kpoints = Kpoints.from_file(filepath)
@@ -447,6 +456,10 @@ class PotcarSingleTest(unittest.TestCase):
     def test_nelectrons(self):
         self.assertEqual(self.psingle.nelectrons, 13)
 
+    def test_electron_config(self):
+        config = self.psingle.electron_configuration
+        self.assertEqual(config[-1], (3, "p", 6))
+
     def test_attributes(self):
         for k in ['DEXC', 'RPACOR', 'ENMAX', 'QCUT', 'EAUG', 'RMAX',
                   'ZVAL', 'EATOM', 'NDATA', 'QGAM', 'ENMIN', 'RCLOC',
@@ -454,7 +467,8 @@ class PotcarSingleTest(unittest.TestCase):
             self.assertIsNotNone(getattr(self.psingle, k))
 
     def test_found_unknown_key(self):
-        self.assertRaises(KeyError, PotcarSingle.parse_functions.get('BAD_KEY'), "BAD_VALUE")
+        with self.assertRaises(KeyError):
+            PotcarSingle.parse_functions['BAD_KEY']
 
     def test_bad_value(self):
         self.assertRaises(ValueError, PotcarSingle.parse_functions['ENMAX'], "ThisShouldBeAFloat")
@@ -559,6 +573,19 @@ class VaspInputTest(unittest.TestCase):
         vinput = VaspInput.from_dict(d)
         comp = vinput["POSCAR"].structure.composition
         self.assertEqual(comp, Composition("Fe4P4O16"))
+
+    def test_write(self):
+        tmp_dir = "VaspInput.testing"
+        self.vinput.write_input(tmp_dir)
+
+        filepath = os.path.join(tmp_dir, "INCAR")
+        incar = Incar.from_file(filepath)
+        self.assertEqual(incar["NSW"], 99)
+
+        for name in ("INCAR", "POSCAR", "POTCAR", "KPOINTS"):
+            os.remove(os.path.join(tmp_dir, name))
+
+        os.rmdir(tmp_dir)
 
     def test_from_directory(self):
         vi = VaspInput.from_directory(test_dir,

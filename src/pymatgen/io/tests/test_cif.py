@@ -1,4 +1,6 @@
 # coding: utf-8
+# Copyright (c) Pymatgen Development Team.
+# Distributed under the terms of the MIT License.
 
 from __future__ import unicode_literals
 
@@ -8,9 +10,9 @@ import warnings
 
 import numpy as np
 
-from pymatgen.io.cifio import CifParser, CifWriter, CifBlock
-from pymatgen.io.vaspio.vasp_input import Poscar
-from pymatgen import Element, Specie, Lattice, Structure, Composition
+from pymatgen.io.cif import CifParser, CifWriter, CifBlock
+from pymatgen.io.vasp.inputs import Poscar
+from pymatgen import Element, Specie, Lattice, Structure, Composition, DummySpecie
 from pymatgen.analysis.structure_matcher import StructureMatcher
 
 
@@ -24,102 +26,84 @@ class CifBlockTest(unittest.TestCase):
             s = f.read()
         c = CifBlock.from_string(s)
         cif_str_2 = str(CifBlock.from_string(str(c)))
-        cif_str = """data_28417-ICSD
-_database_code_ICSD   28417
-_audit_creation_date   1980-01-01
-_audit_update_record   2003-04-01
+        cif_str = """data_53781-ICSD
+_database_code_ICSD   53781
+_audit_creation_date   2003-04-01
+_audit_update_record   2013-02-01
 _chemical_name_systematic   Carbon
 _chemical_formula_structural   C
 _chemical_formula_sum   C1
-_chemical_name_mineral   'Graphite, nitrated'
-_exptl_crystal_density_diffrn   1.36
-_publ_section_title
-'Order-disorder transformations in graphite nitrates'
+_chemical_name_structure_type   Graphite(2H)
+_chemical_name_mineral   'Graphite 2H'
+_exptl_crystal_density_diffrn   2.22
+_publ_section_title   'Structure of graphite'
 loop_
-  _citation_id
-  _citation_journal_full
-  _citation_year
-  _citation_journal_volume
-  _citation_page_first
-  _citation_page_last
-  _citation_journal_id_ASTM
-   primary
-;
-Proceedings of the Royal Society of London, Series A: Mathematical and
-Physical Sciences (76,1906-)
-;
-   1966  291  324  339  PRLAAZ
+ _citation_id
+ _citation_journal_full
+ _citation_year
+ _citation_journal_volume
+ _citation_page_first
+ _citation_page_last
+ _citation_journal_id_ASTM
+  primary  'Physical Review (1,1893-132,1963/141,1966-188,1969)'
+  1917  10  661  696  PHRVAO
 loop_
-  _publ_author_name
-   'Nixon, D.E.'
-   'Parry, G.S.'
-   'Ubbelohde, A.R.'
-_cell_length_a   2.46
-_cell_length_b   2.46
-_cell_length_c   33.45
+ _publ_author_name
+  'Hull, A.W.'
+_cell_length_a   2.47
+_cell_length_b   2.47
+_cell_length_c   6.8
 _cell_angle_alpha   90.
 _cell_angle_beta   90.
 _cell_angle_gamma   120.
-_cell_volume   175.31
-_cell_formula_units_Z   12
-_symmetry_space_group_name_H-M   'R -3 m H'
-_symmetry_Int_Tables_number   166
+_cell_volume   35.93
+_cell_formula_units_Z   4
+_symmetry_space_group_name_H-M   'P 63/m m c'
+_symmetry_Int_Tables_number   194
 loop_
-  _symmetry_equiv_pos_site_id
-  _symmetry_equiv_pos_as_xyz
-   1  'x-y, -y, -z'
-   2  '-x, -x+y, -z'
-   3  'y, x, -z'
-   4  'x-y, x, -z'
-   5  'y, -x+y, -z'
-   6  '-x, -y, -z'
-   7  '-x+y, y, z'
-   8  'x, x-y, z'
-   9  '-y, -x, z'
-   10  '-x+y, -x, z'
-   11  '-y, x-y, z'
-   12  'x, y, z'
-   13  'x-y+2/3, -y+1/3, -z+1/3'
-   14  '-x+2/3, -x+y+1/3, -z+1/3'
-   15  'y+2/3, x+1/3, -z+1/3'
-   16  'x-y+2/3, x+1/3, -z+1/3'
-   17  'y+2/3, -x+y+1/3, -z+1/3'
-   18  '-x+2/3, -y+1/3, -z+1/3'
-   19  '-x+y+2/3, y+1/3, z+1/3'
-   20  'x+2/3, x-y+1/3, z+1/3'
-   21  '-y+2/3, -x+1/3, z+1/3'
-   22  '-x+y+2/3, -x+1/3, z+1/3'
-   23  '-y+2/3, x-y+1/3, z+1/3'
-   24  'x+2/3, y+1/3, z+1/3'
-   25  'x-y+1/3, -y+2/3, -z+2/3'
-   26  '-x+1/3, -x+y+2/3, -z+2/3'
-   27  'y+1/3, x+2/3, -z+2/3'
-   28  'x-y+1/3, x+2/3, -z+2/3'
-   29  'y+1/3, -x+y+2/3, -z+2/3'
-   30  '-x+1/3, -y+2/3, -z+2/3'
-   31  '-x+y+1/3, y+2/3, z+2/3'
-   32  'x+1/3, x-y+2/3, z+2/3'
-   33  '-y+1/3, -x+2/3, z+2/3'
-   34  '-x+y+1/3, -x+2/3, z+2/3'
-   35  '-y+1/3, x-y+2/3, z+2/3'
-   36  'x+1/3, y+2/3, z+2/3'
+ _symmetry_equiv_pos_site_id
+ _symmetry_equiv_pos_as_xyz
+  1  'x, x-y, -z+1/2'
+  2  '-x+y, y, -z+1/2'
+  3  '-y, -x, -z+1/2'
+  4  '-x+y, -x, -z+1/2'
+  5  '-y, x-y, -z+1/2'
+  6  'x, y, -z+1/2'
+  7  '-x, -x+y, z+1/2'
+  8  'x-y, -y, z+1/2'
+  9  'y, x, z+1/2'
+  10  'x-y, x, z+1/2'
+  11  'y, -x+y, z+1/2'
+  12  '-x, -y, z+1/2'
+  13  '-x, -x+y, -z'
+  14  'x-y, -y, -z'
+  15  'y, x, -z'
+  16  'x-y, x, -z'
+  17  'y, -x+y, -z'
+  18  '-x, -y, -z'
+  19  'x, x-y, z'
+  20  '-x+y, y, z'
+  21  '-y, -x, z'
+  22  '-x+y, -x, z'
+  23  '-y, x-y, z'
+  24  'x, y, z'
 loop_
-  _atom_type_symbol
-  _atom_type_oxidation_number
-   C0+  0
+ _atom_type_symbol
+ _atom_type_oxidation_number
+  C0+  0
 loop_
-  _atom_site_label
-  _atom_site_type_symbol
-  _atom_site_symmetry_multiplicity
-  _atom_site_Wyckoff_symbol
-  _atom_site_fract_x
-  _atom_site_fract_y
-  _atom_site_fract_z
-  _atom_site_B_iso_or_equiv
-  _atom_site_occupancy
-  _atom_site_attached_hydrogens
-   C1  C0+  6  c  0  0  0.05  0.  1.  0
-   C2  C0+  6  c  0  0  0.283  0.  1.  0"""
+ _atom_site_label
+ _atom_site_type_symbol
+ _atom_site_symmetry_multiplicity
+ _atom_site_Wyckoff_symbol
+ _atom_site_fract_x
+ _atom_site_fract_y
+ _atom_site_fract_z
+ _atom_site_B_iso_or_equiv
+ _atom_site_occupancy
+ _atom_site_attached_hydrogens
+  C1  C0+  2  b  0  0  0.25  .  1.  0
+  C2  C0+  2  c  0.3333  0.6667  0.25  .  1.  0"""
         for l1, l2, l3 in zip(str(c).split("\n"), cif_str.split("\n"),
                           cif_str_2.split("\n")):
             self.assertEqual(l1.strip(), l2.strip())
@@ -296,7 +280,7 @@ loop_
         filepath = os.path.join(test_dir, 'POSCAR')
         poscar = Poscar.from_file(filepath)
         writer = CifWriter(poscar.structure, symprec=0.001)
-        ans = """#generated using pymatgen
+        ans = """# generated using pymatgen
 data_FePO4
 _symmetry_space_group_name_H-M   Pnma
 _cell_length_a   10.41176687
@@ -343,7 +327,7 @@ loop_
         filepath = os.path.join(test_dir, 'POSCAR')
         poscar = Poscar.from_file(filepath)
         writer = CifWriter(poscar.structure, symprec=0.1)
-        ans = """#generated using pymatgen
+        ans = """# generated using pymatgen
 data_FePO4
 _symmetry_space_group_name_H-M   Pnma
 _cell_length_a   10.41176687
@@ -384,9 +368,9 @@ loop_
         for l1, l2 in zip(str(writer).split("\n"), ans.split("\n")):
             self.assertEqual(l1.strip(), l2.strip())
 
-        ans = """#generated using pymatgen
+        ans = """# generated using pymatgen
 data_LiFePO4
-_symmetry_space_group_name_H-M   Pcmn
+_symmetry_space_group_name_H-M   Pnma
 _cell_length_a   4.74480000
 _cell_length_b   6.06577000
 _cell_length_c   10.41037000
@@ -403,10 +387,10 @@ loop_
  _symmetry_equiv_pos_as_xyz
   1  'x, y, z'
   2  '-x, -y, -z'
-  3  '-x+1/2, -y+1/2, z+1/2'
-  4  'x+1/2, y+1/2, -z+1/2'
-  5  'x+1/2, -y, -z+1/2'
-  6  '-x+1/2, y, z+1/2'
+  3  'x+1/2, -y, -z+1/2'
+  4  '-x+1/2, y, z+1/2'
+  5  '-x+1/2, -y+1/2, z+1/2'
+  6  'x+1/2, y+1/2, -z+1/2'
   7  '-x, y+1/2, -z'
   8  'x, -y+1/2, z'
 loop_
@@ -417,12 +401,12 @@ loop_
  _atom_site_fract_y
  _atom_site_fract_z
  _atom_site_occupancy
-  Li  Li1  4  0.000010  0.999990  0.999990  1.0
-  Fe  Fe2  4  0.025080  0.746540  0.281160  1.0
-  P  P3  4  0.082070  0.248300  0.405560  1.0
-  O  O4  8  0.213450  0.044060  0.334190  1.0
-  O  O5  4  0.208450  0.251100  0.543160  1.0
-  O  O6  4  0.241490  0.750460  0.596220  1.0
+  Li  Li1  4  0.000010  0.500000  0.999990  1.0
+  Fe  Fe2  4  0.025030  0.746540  0.281160  1.0
+  P  P3  4  0.082060  0.248260  0.405570  1.0
+  O  O4  8  0.213420  0.043980  0.334230  1.0
+  O  O5  4  0.208430  0.251100  0.543180  1.0
+  O  O6  4  0.241480  0.750450  0.596220  1.0
 """
         s = Structure.from_file(os.path.join(test_dir, 'LiFePO4.cif'))
         writer = CifWriter(s, symprec=0.1)
@@ -439,7 +423,7 @@ loop_
                                     [0.00, -2.2171384943, 3.1355090603]]))
         struct = Structure(lattice, [si, {si:0.5, n:0.5}], coords)
         writer = CifWriter(struct)
-        ans = """#generated using pymatgen
+        ans = """# generated using pymatgen
 data_Si1.5N0.5
 _symmetry_space_group_name_H-M   'P 1'
 _cell_length_a   3.84019793
@@ -476,18 +460,18 @@ N  N3  1  0.750000  0.500000  0.750000  0.5
     def test_specie_cifwriter(self):
         si4 = Specie("Si", 4)
         si3 = Specie("Si", 3)
-        n = Specie("N", -3)
+        n = DummySpecie("X", -3)
         coords = list()
-        coords.append(np.array([0, 0, 0]))
-        coords.append(np.array([0.75, 0.5, 0.75]))
         coords.append(np.array([0.5, 0.5, 0.5]))
+        coords.append(np.array([0.75, 0.5, 0.75]))
+        coords.append(np.array([0, 0, 0]))
         lattice = Lattice(np.array([[3.8401979337, 0.00, 0.00],
                                     [1.9200989668, 3.3257101909, 0.00],
                                     [0.00, -2.2171384943, 3.1355090603]]))
-        struct = Structure(lattice, [si4, {si3:0.5, n:0.5}, n], coords)
+        struct = Structure(lattice, [n, {si3:0.5, n:0.5}, si4], coords)
         writer = CifWriter(struct)
-        ans = """#generated using pymatgen
-data_Si1.5N1.5
+        ans = """# generated using pymatgen
+data_X1.5Si1.5
 _symmetry_space_group_name_H-M   'P 1'
 _cell_length_a   3.84019793
 _cell_length_b   3.84019899
@@ -496,10 +480,10 @@ _cell_angle_alpha   119.99999086
 _cell_angle_beta   90.00000000
 _cell_angle_gamma   60.00000914
 _symmetry_Int_Tables_number   1
-_chemical_formula_structural   Si1.5N1.5
-_chemical_formula_sum   'Si1.5 N1.5'
+_chemical_formula_structural   X1.5Si1.5
+_chemical_formula_sum   'X1.5 Si1.5'
 _cell_volume   40.0447946443
-_cell_formula_units_Z   0
+_cell_formula_units_Z   1
 loop_
   _symmetry_equiv_pos_site_id
   _symmetry_equiv_pos_as_xyz
@@ -507,9 +491,9 @@ loop_
 loop_
   _atom_type_symbol
   _atom_type_oxidation_number
+   X3-  -3.0
    Si3+  3.0
    Si4+  4.0
-   N3-  -3.0
 loop_
   _atom_site_type_symbol
   _atom_site_label
@@ -518,10 +502,11 @@ loop_
   _atom_site_fract_y
   _atom_site_fract_z
   _atom_site_occupancy
-  Si4+  Si1  1  0.000000  0.000000  0.000000  1
-  Si3+  Si2  1  0.750000  0.500000  0.750000  0.5
-  N3-  N3  1  0.750000  0.500000  0.750000  0.5
-  N3-  N4  1  0.500000  0.500000  0.500000  1
+  X3-  X1  1  0.500000  0.500000  0.500000  1
+  X3-  X2  1  0.750000  0.500000  0.750000  0.5
+  Si3+  Si3  1  0.750000  0.500000  0.750000  0.5
+  Si4+  Si4  1  0.000000  0.000000  0.000000  1
+
 """
         for l1, l2 in zip(str(writer).split("\n"), ans.split("\n")):
             self.assertEqual(l1.strip(), l2.strip())

@@ -1,4 +1,6 @@
 # coding: utf-8
+# Copyright (c) Pymatgen Development Team.
+# Distributed under the terms of the MIT License.
 
 from __future__ import division, unicode_literals
 
@@ -20,8 +22,8 @@ import os
 from nose.exc import SkipTest
 
 from pymatgen import Composition
-from pymatgen.io.vaspio.vasp_input import Poscar
-import pymatgen.io.aseio as aio
+from pymatgen.io.vasp.inputs import Poscar
+import pymatgen.io.ase as aio
 
 test_dir = os.path.join(os.path.dirname(__file__), "..", "..", "..",
                         'test_files')
