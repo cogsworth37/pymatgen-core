@@ -21,7 +21,7 @@ import warnings
 
 from pymatgen.util.testing import PymatgenTest
 from pymatgen.core.physical_constants import BOLTZMANN_CONST
-from pymatgen.io.vaspio.vasp_input import Incar, Poscar, Kpoints, Potcar, \
+from pymatgen.io.vasp.inputs import Incar, Poscar, Kpoints, Potcar, \
     PotcarSingle, VaspInput
 from pymatgen import Composition, Structure
 from monty.io import zopen
@@ -360,6 +360,13 @@ class KpointsTest(unittest.TestCase):
         filepath = os.path.join(test_dir, 'KPOINTS.explicit')
         kpoints = Kpoints.from_file(filepath)
         self.assertIsNotNone(kpoints.kpts_weights)
+        self.assertEqual(str(kpoints).strip(), """Example file
+4
+Cartesian
+0.0 0.0 0.0 1 None
+0.0 0.0 0.5 1 None
+0.0 0.5 0.5 2 None
+0.5 0.5 0.5 4 None""")
 
         filepath = os.path.join(test_dir, 'KPOINTS.explicit_tet')
         kpoints = Kpoints.from_file(filepath)
