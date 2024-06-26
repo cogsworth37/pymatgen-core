@@ -24,7 +24,6 @@ from monty.json import MSONable, jsanitize
 from monty.os.path import zpath
 from monty.re import regrep
 from numpy.testing import assert_allclose
-
 from pymatgen.core import Composition, Element, Lattice, Structure
 from pymatgen.core.trajectory import Trajectory
 from pymatgen.core.units import unitized
@@ -51,9 +50,8 @@ if TYPE_CHECKING:
     from xml.etree.ElementTree import Element as XML_Element
 
     from numpy.typing import NDArray
-    from typing_extensions import Self
-
     from pymatgen.util.typing import PathLike
+    from typing_extensions import Self
 
 logger = logging.getLogger(__name__)
 
@@ -722,7 +720,6 @@ class Vasprun(MSONable):
 
         Hubbard U terms and vdW corrections are detected automatically as well.
         """
-
         # Care should be taken: if a GGA tag is not specified, VASP will default
         # to the functional specified by the POTCAR. It is not clear how
         # VASP handles the "--" value.
@@ -1159,7 +1156,6 @@ class Vasprun(MSONable):
         Returns:
             Potcar | None: The POTCAR from the specified path or None if not found/no path specified.
         """
-
         if not path:
             return None
 
@@ -2255,7 +2251,7 @@ class Outcar:
         last_one_only: bool = True,
         first_one_only: bool = False,
     ) -> list:
-        """Parse table-like data. A table composes of three parts: header,
+        r"""Parse table-like data. A table composes of three parts: header,
         main body, footer. All the data matches "row pattern" in the main body
         will be returned.
 
@@ -2348,7 +2344,7 @@ class Outcar:
         """
         Parse lines with values in scientific notation and potentially
         without spaces in between the values. This assumes that the scientific
-        notation always lists two digits for the exponent, e.g. 3.535E-02
+        notation always lists two digits for the exponent, e.g. 3.535E-02.
 
         Args:
             line: line to parse.
@@ -3213,7 +3209,6 @@ class Outcar:
 
     def read_pseudo_zval(self) -> None:
         """Create a pseudopotential ZVAL dictionary."""
-
         try:
 
             def atom_symbols(results, match):

@@ -24,12 +24,11 @@ from monty.functools import lazy_property
 from monty.itertools import iterator_from_slice
 from monty.json import MontyDecoder, MSONable
 from monty.os.path import find_exts
-from tabulate import tabulate
-
 from pymatgen.core import Element
 from pymatgen.core.xcfunc import XcFunc
 from pymatgen.io.core import ParseError
 from pymatgen.util.plotting import add_fig_kwargs, get_ax_fig
+from tabulate import tabulate
 
 if TYPE_CHECKING:
     from collections.abc import Iterator, Sequence
@@ -37,9 +36,8 @@ if TYPE_CHECKING:
 
     import matplotlib.pyplot as plt
     from numpy.typing import NDArray
-    from typing_extensions import Self
-
     from pymatgen.core import Structure
+    from typing_extensions import Self
 
 logger = logging.getLogger(__name__)
 
@@ -131,7 +129,6 @@ class Pseudo(MSONable, abc.ABC):
 
     def to_str(self, verbose=0) -> str:
         """String representation."""
-
         lines: list[str] = []
         lines += (
             f"<{type(self).__name__}: {self.basename}>",
@@ -298,13 +295,11 @@ class Pseudo(MSONable, abc.ABC):
     @property
     def has_dojo_report(self):
         """True if the pseudo has an associated `DOJO_REPORT` section."""
-
         return hasattr(self, "dojo_report") and self.dojo_report
 
     @property
     def djrepo_path(self):
         """The path of the djrepo file. None if file does not exist."""
-
         root, _ext = os.path.splitext(self.filepath)
         return f"{root}.djrepo"
         # if os.path.isfile(path): return path
@@ -318,7 +313,6 @@ class Pseudo(MSONable, abc.ABC):
         Args:
             accuracy: ["low", "normal", "high"]
         """
-
         if not self.has_dojo_report:
             return Hint(ecut=0.0, pawecutdg=0.0)
 
@@ -522,7 +516,6 @@ class NcAbinitPseudo(NcPseudo, AbinitPseudo):
     @property
     def Z_val(self):
         """Number of valence electrons."""
-
         return self._zion
 
     @property
@@ -1178,7 +1171,6 @@ class PawXmlSetup(Pseudo, PawPseudo):
         Args:
             filepath (str): Path to the XML file.
         """
-
         self.path = os.path.abspath(filepath)
 
         # Get the XML root (this trick is used to that the object is pickleable).
@@ -1248,7 +1240,6 @@ class PawXmlSetup(Pseudo, PawPseudo):
     @lazy_property
     def root(self):
         """Root tree of XML."""
-
         tree = Et.parse(self.filepath)
         return tree.getroot()
 
@@ -1322,7 +1313,6 @@ class PawXmlSetup(Pseudo, PawPseudo):
 
     def _parse_radfunc(self, func_name):
         """Parse the first occurrence of func_name in the XML file."""
-
         node = self.root.find(func_name)
         grid = node.attrib["grid"]
         values = np.array([float(s) for s in node.text.split()])
@@ -1331,7 +1321,6 @@ class PawXmlSetup(Pseudo, PawPseudo):
 
     def _parse_all_radfuncs(self, func_name):
         """Parse all the nodes with tag func_name in the XML file."""
-
         for node in self.root.findall(func_name):
             grid = node.attrib["grid"]
             values = np.array([float(s) for s in node.text.split()])
@@ -1428,7 +1417,6 @@ class PawXmlSetup(Pseudo, PawPseudo):
         Returns:
             plt.Figure: matplotlib figure
         """
-
         ax, fig = get_ax_fig(ax)
 
         ax.grid(visible=True)
@@ -1459,7 +1447,6 @@ class PawXmlSetup(Pseudo, PawPseudo):
         Returns:
             plt.Figure: matplotlib figure
         """
-
         ax, fig = get_ax_fig(ax)
         ax.grid(visible=True)
         ax.set_xlabel("r [Bohr]")

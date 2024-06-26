@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 import numpy as np
 from monty.io import zopen
 from monty.json import MSONable
-
 from pymatgen.io.pwmat.inputs import ACstrExtractor, AtomConfig, LineLocator
 
 if TYPE_CHECKING:
@@ -154,10 +153,10 @@ class Movement(MSONable):
 
 
 class OutFermi(MSONable):
-    """Extract fermi energy (eV) from OUT.FERMI"""
+    """Extract fermi energy (eV) from OUT.FERMI."""
 
     def __init__(self, filename: PathLike):
-        """Initialization function
+        """Initialization function.
 
         Args:
             filename (PathLike): The absolute path of OUT.FERMI file.
@@ -318,7 +317,7 @@ class DosSpin(MSONable):
     """Extract information of DOS from DOS_SPIN file:
     - DOS.totalspin, DOS.totalspin_projected
     - DOS.spinup, DOS.spinup_projected
-    - DOS.spindown, DOS.spindown_projected
+    - DOS.spindown, DOS.spindown_projected.
     """
 
     def __init__(self, filename: PathLike):
@@ -343,7 +342,7 @@ class DosSpin(MSONable):
 
     @property
     def labels(self) -> list[str]:
-        """The name of the partial density of states"""
+        """The name of the partial density of states."""
         return self._labels
 
     @property

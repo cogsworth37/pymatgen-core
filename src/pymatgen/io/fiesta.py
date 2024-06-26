@@ -17,15 +17,13 @@ from typing import TYPE_CHECKING
 
 from monty.io import zopen
 from monty.json import MSONable
-
 from pymatgen.core.structure import Molecule
 
 if TYPE_CHECKING:
     from pathlib import Path
 
-    from typing_extensions import Self
-
     from pymatgen.util.typing import Tuple3Ints
+    from typing_extensions import Self
 
 __author__ = "ndardenne"
 __copyright__ = "Copyright 2012, The Materials Project"
@@ -77,7 +75,7 @@ class Nwchem2Fiesta(MSONable):
         os.chdir(init_folder)
 
     def as_dict(self):
-        """MSONable dict"""
+        """MSONable dict."""
         return {
             "@module": type(self).__module__,
             "@class": type(self).__name__,
@@ -173,7 +171,7 @@ class FiestaRun(MSONable):
             os.chdir(init_folder)
 
     def as_dict(self):
-        """MSONable dict"""
+        """MSONable dict."""
         return {
             "@module": type(self).__module__,
             "@class": type(self).__name__,
@@ -186,7 +184,7 @@ class FiestaRun(MSONable):
     def from_dict(cls, dct: dict) -> Self:
         """
         Args:
-            dct (dict): Dict representation
+            dct (dict): Dict representation.
 
         Returns:
             FiestaRun
@@ -265,7 +263,7 @@ class BasisSetReader:
         return basis_set
 
     def set_n_nlmo(self):
-        """the number of nlm orbitals for the basis set"""
+        """The number of nlm orbitals for the basis set."""
         n_nlm_orbs = 0
 
         data_tmp = self.data
@@ -311,7 +309,7 @@ class FiestaInput(MSONable):
             Exc_DFT_option: dict
             COHSEX_options: dict
             GW_options: dict
-            BSE_TDDFT_options: dict
+            BSE_TDDFT_options: dict.
         """
         self._mol = mol
         self.correlation_grid = correlation_grid or {"dE_grid": "0.500", "n_grid": "14"}
@@ -352,7 +350,7 @@ class FiestaInput(MSONable):
                     shutil.copyfile(f"{auxiliary_folder}/{file}", f"{folder}/{specie}2.ion")
 
     def set_gw_options(self, nv_band=10, nc_band=10, n_iteration=5, n_grid=6, dE_grid=0.5):
-        """Set parameters in cell.in for a GW computation
+        """Set parameters in cell.in for a GW computation.
 
         Args:
             nv__band: number of valence bands to correct with GW
@@ -373,7 +371,7 @@ class FiestaInput(MSONable):
         return "makedirs FULL_BSE_Densities folder"
 
     def set_bse_options(self, n_excitations=10, nit_bse=200):
-        """Set parameters in cell.in for a BSE computation
+        """Set parameters in cell.in for a BSE computation.
 
         Args:
             nv_bse: number of valence bands
@@ -386,7 +384,7 @@ class FiestaInput(MSONable):
     def dump_bse_data_in_gw_run(self, BSE_dump=True):
         """
         Args:
-            BSE_dump: bool
+            BSE_dump: bool.
 
         Returns:
             set the "do_bse" variable to one in cell.in
@@ -399,7 +397,7 @@ class FiestaInput(MSONable):
     def dump_tddft_data_in_gw_run(self, tddft_dump: bool = True):
         """
         Args:
-            TDDFT_dump: bool
+            TDDFT_dump: bool.
 
         Returns:
             set the do_tddft variable to one in cell.in
@@ -528,7 +526,7 @@ $geometry
         )
 
     def write_file(self, filename: str | Path) -> None:
-        """Write FiestaInput to a file
+        """Write FiestaInput to a file.
 
         Args:
             filename: Filename.
@@ -537,7 +535,7 @@ $geometry
             file.write(str(self))
 
     def as_dict(self):
-        """MSONable dict"""
+        """MSONable dict."""
         return {
             "mol": self._mol.as_dict(),
             "correlation_grid": self.correlation_grid,
@@ -551,7 +549,7 @@ $geometry
     def from_dict(cls, dct: dict) -> Self:
         """
         Args:
-            dct (dict): Dict representation
+            dct (dict): Dict representation.
 
         Returns:
             FiestaInput

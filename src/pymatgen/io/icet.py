@@ -160,7 +160,6 @@ class IcetSQS:
         Returns:
             pymatgen Sqs object
         """
-
         sqs_structures = self.sqs_getter()
         for idx in range(len(sqs_structures)):
             sqs_structures[idx]["structure"] = AseAtomsAdaptor.get_structure(sqs_structures[idx]["structure"])
@@ -235,7 +234,6 @@ class IcetSQS:
                     "objective_function": SQS objective function,
                 }
         """
-
         # Translate concentrations to the format required for concentration
         # restricted enumeration
         cr: dict[str, tuple] = {}

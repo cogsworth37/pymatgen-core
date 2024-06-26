@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 import numpy as np
 from monty.dev import requires
 from monty.json import MSONable
-
 from pymatgen.core.structure import Structure
 from pymatgen.io.vasp import Kpoints
 
@@ -103,7 +102,7 @@ class Control(MSONable, dict):
                 - positions (size natomx3 array): atomic positions in lattice
                   coordinates
                 - scell (size 3 list): supercell sizes along each crystal axis
-                  used for the 2nd-order force constant calculation
+                  used for the 2nd-order force constant calculation.
         """
         super().__init__()
         if ngrid is None:

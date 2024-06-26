@@ -13,7 +13,6 @@ import numpy as np
 from monty.collections import AttrDict
 from monty.design_patterns import singleton
 from monty.json import MontyDecoder, MontyEncoder, MSONable
-
 from pymatgen.core import ArrayWithUnit, Lattice, Species, Structure, units
 
 if TYPE_CHECKING:
@@ -285,7 +284,7 @@ def structure_to_abivars(
 def contract(string):
     """
     assert contract("1 1 1 2 2 3") == "3*1 2*2 1*3"
-    assert contract("1 1 3 2 3") == "2*1 1*3 1*2 1*3"
+    assert contract("1 1 3 2 3") == "2*1 1*3 1*2 1*3".
     """
     if not string:
         return string
@@ -305,9 +304,7 @@ def contract(string):
 
 
 class AbivarAble(abc.ABC):
-    """
-    An AbivarAble object provides a method to_abivars that returns a dictionary with the abinit variables.
-    """
+    """An AbivarAble object provides a method to_abivars that returns a dictionary with the abinit variables."""
 
     @abc.abstractmethod
     def to_abivars(self):

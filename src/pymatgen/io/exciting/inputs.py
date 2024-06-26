@@ -10,7 +10,6 @@ import numpy as np
 import scipy.constants as const
 from monty.io import zopen
 from monty.json import MSONable
-
 from pymatgen.core import Element, Lattice, Structure
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 from pymatgen.symmetry.bandstructure import HighSymmKpath
@@ -161,7 +160,7 @@ class ExcitingInput(MSONable):
     def from_file(cls, filename: str | Path) -> Self:
         """
         Args:
-            filename: Filename
+            filename: Filename.
 
         Returns:
             ExcitingInput

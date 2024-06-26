@@ -22,7 +22,6 @@ from typing import TYPE_CHECKING
 import numpy as np
 from monty.io import zopen
 from monty.json import MSONable
-
 from pymatgen.core.structure import Structure
 from pymatgen.electronic_structure.bandstructure import LobsterBandStructureSymmLine
 from pymatgen.electronic_structure.core import Orbital, Spin
@@ -279,7 +278,6 @@ class Cohpcar:
             indices, a tuple containing the orbitals (if orbital-resolved),
             and a label for the orbitals (if orbital-resolved).
         """
-
         if not are_multi_center_cobis:
             line_new = line.rsplit("(", 1)
             length = float(line_new[-1][:-1])
@@ -358,7 +356,7 @@ class Icohplist(MSONable):
             filename: Name of the ICOHPLIST file. If it is None, the default
               file name will be chosen, depending on the value of are_coops
             is_spin_polarized: Boolean to indicate if the calculation is spin polarized
-            icohpcollection: IcohpCollection Object
+            icohpcollection: IcohpCollection Object.
 
         """
         self._filename = filename
@@ -543,12 +541,11 @@ class NciCobiList:
         filename: PathLike | None = "NcICOBILIST.lobster",
     ) -> None:
         """
-        LOBSTER < 4.1.0: no COBI/ICOBI/NcICOBI
+        LOBSTER < 4.1.0: no COBI/ICOBI/NcICOBI.
 
         Args:
             filename: Name of the NcICOBILIST file.
         """
-
         # LOBSTER list files have an extra trailing blank line
         # and we don't need the header.
         with zopen(filename, mode="rt") as file:
@@ -617,9 +614,7 @@ class NciCobiList:
 
     @property
     def ncicobi_list(self) -> dict[Any, dict[str, Any]]:
-        """
-        Returns: ncicobilist.
-        """
+        """Returns: ncicobilist."""
         ncicobi_list = {}
         for idx in range(len(self.list_labels)):
             ncicobi_list[str(idx + 1)] = {
@@ -748,32 +743,32 @@ class Doscar:
 
     @property
     def completedos(self) -> LobsterCompleteDos:
-        """LobsterCompleteDos"""
+        """LobsterCompleteDos."""
         return self._completedos
 
     @property
     def pdos(self) -> list:
-        """Projected DOS"""
+        """Projected DOS."""
         return self._pdos
 
     @property
     def tdos(self) -> Dos:
-        """Total DOS"""
+        """Total DOS."""
         return self._tdos
 
     @property
     def energies(self) -> np.ndarray:
-        """Energies"""
+        """Energies."""
         return self._energies
 
     @property
     def tdensities(self) -> dict[Spin, np.ndarray]:
-        """total densities as a np.ndarray"""
+        """Total densities as a np.ndarray."""
         return self._tdensities
 
     @property
     def itdensities(self) -> dict[Spin, np.ndarray]:
-        """integrated total densities as a np.ndarray"""
+        """Integrated total densities as a np.ndarray."""
         return self._itdensities
 
     @property
@@ -809,7 +804,7 @@ class Charge(MSONable):
             atomlist: list of atoms in the structure
             types: list of unique species in the structure
             mulliken: list of Mulliken charges
-            loewdin: list of Loewdin charges
+            loewdin: list of Loewdin charges.
         """
         self._filename = filename
         self.num_atoms = num_atoms
@@ -833,7 +828,7 @@ class Charge(MSONable):
                 self.loewdin += [float(line[3])]
 
     def get_structure_with_charges(self, structure_filename: PathLike) -> Structure:
-        """Get a Structure with Mulliken and Loewdin charges as site properties
+        """Get a Structure with Mulliken and Loewdin charges as site properties.
 
         Args:
             structure_filename: filename of POSCAR
@@ -930,7 +925,7 @@ class Lobsterout(MSONable):
         """
         Args:
             filename: The lobsterout file.
-            **kwargs: dict to initialize Lobsterout instance
+            **kwargs: dict to initialize Lobsterout instance.
         """
         self.filename = filename
         if kwargs:
@@ -1043,7 +1038,7 @@ class Lobsterout(MSONable):
         }
 
     def as_dict(self) -> dict:
-        """MSONable dict"""
+        """MSONable dict."""
         dct = dict(vars(self))
         dct["@module"] = type(self).__module__
         dct["@class"] = type(self).__name__
@@ -1225,7 +1220,7 @@ class Fatband:
                 Instead, the Fermi energy from the DFT run can be provided. Then,
                 this value should be set to None.
             structure (Structure): Structure object.
-            efermi (float): fermi energy in eV
+            efermi (float): fermi energy in eV.
         """
         warnings.warn("Make sure all relevant FATBAND files were generated and read in!")
         warnings.warn("Use Lobster 3.2.0 or newer for fatband calculations!")
@@ -1419,6 +1414,7 @@ class Fatband:
 
 class Bandoverlaps(MSONable):
     """Read in bandOverlaps.lobster files. These files are not created during every Lobster run.
+
     Attributes:
         band_overlaps_dict (dict[Spin, Dict[str, Dict[str, Union[float, np.ndarray]]]]): A dictionary
             containing the band overlap data of the form: {spin: {"kpoint as string": {"maxDeviation":
@@ -1458,7 +1454,7 @@ class Bandoverlaps(MSONable):
 
     def _read(self, contents: list, spin_numbers: list):
         """
-        Will read in all contents of the file
+        Will read in all contents of the file.
 
         Args:
             contents: list of strings
@@ -1506,7 +1502,7 @@ class Bandoverlaps(MSONable):
 
     def has_good_quality_maxDeviation(self, limit_maxDeviation: float = 0.1) -> bool:
         """
-        Will check if the maxDeviation from the ideal bandoverlap is smaller or equal to limit_maxDeviation
+        Will check if the maxDeviation from the ideal bandoverlap is smaller or equal to limit_maxDeviation.
 
         Args:
             limit_maxDeviation: limit of the maxDeviation
@@ -1587,7 +1583,7 @@ class Grosspop(MSONable):
         """
         Args:
             filename: filename of the "GROSSPOP.lobster" file
-            list_dict_grosspop: List of dictionaries including all information about the gross populations
+            list_dict_grosspop: List of dictionaries including all information about the gross populations.
         """
         # opens file
         self._filename = filename
@@ -1613,7 +1609,7 @@ class Grosspop(MSONable):
                         self.list_dict_grosspop += [small_dict]
 
     def get_structure_with_total_grosspop(self, structure_filename: str) -> Structure:
-        """Get a Structure with Mulliken and Loewdin total grosspopulations as site properties
+        """Get a Structure with Mulliken and Loewdin total grosspopulations as site properties.
 
         Args:
             structure_filename (str): filename of POSCAR
@@ -1888,7 +1884,7 @@ class SitePotential(MSONable):
             sitepotentials_loewdin: Loewdin site potential
             sitepotentials_mulliken: Mulliken site potential
             madelungenergies_loewdin: Madelung energy based on the Loewdin approach
-            madelungenergies_mulliken: Madelung energy based on the Mulliken approach
+            madelungenergies_mulliken: Madelung energy based on the Mulliken approach.
         """
         self._filename = filename
         self.ewald_splitting = [] if ewald_splitting is None else ewald_splitting
@@ -1923,7 +1919,7 @@ class SitePotential(MSONable):
             self.madelungenergies_loewdin = float(data[self.num_atoms + 1].split()[4])
 
     def get_structure_with_site_potentials(self, structure_filename):
-        """Get a Structure with Mulliken and Loewdin charges as site properties
+        """Get a Structure with Mulliken and Loewdin charges as site properties.
 
         Args:
             structure_filename: filename of POSCAR
@@ -2058,9 +2054,8 @@ class LobsterMatrices:
         Args:
             filename: filename for the hamiltonMatrices file, typically "hamiltonMatrices.lobster".
             e_fermi: fermi level in eV for the structure only
-            relevant if input file contains hamilton matrices data
+            relevant if input file contains hamilton matrices data.
         """
-
         self._filename = filename
         # hamiltonMatrices
         with zopen(self._filename, mode="rt") as file:

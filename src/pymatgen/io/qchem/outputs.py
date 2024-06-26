@@ -16,7 +16,6 @@ import numpy as np
 import pandas as pd
 from monty.io import zopen
 from monty.json import MSONable, jsanitize
-
 from pymatgen.analysis.graphs import MoleculeGraph
 from pymatgen.analysis.local_env import OpenBabelNN
 from pymatgen.core import Molecule
@@ -953,7 +952,6 @@ class QCOutput(MSONable):
         Parses associated dipole/multipole moments.
         Also parses spins given an unrestricted SCF.
         """
-
         self.data["dipoles"] = {}
         temp_dipole_total = read_pattern(
             self.text, {"key": r"X\s*[\d\-\.]+\s*Y\s*[\d\-\.]+\s*Z\s*[\d\-\.]+\s*Tot\s*([\d\-\.]+)"}

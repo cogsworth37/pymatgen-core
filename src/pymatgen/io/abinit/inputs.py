@@ -18,7 +18,6 @@ from typing import TYPE_CHECKING, NamedTuple
 import numpy as np
 from monty.collections import AttrDict
 from monty.json import MSONable
-
 from pymatgen.core.structure import Structure
 from pymatgen.io.abinit import abiobjects as aobj
 from pymatgen.io.abinit.pseudos import Pseudo, PseudoTable
@@ -163,7 +162,6 @@ class ShiftMode(Enum):
 
 def _stopping_criterion(run_level, accuracy):
     """Return the stopping criterion for this run_level with the given accuracy."""
-
     # Name of the (default) tolerance used by the run levels.
     _run_level_tolname_map = {
         "scf": "tolvrs",

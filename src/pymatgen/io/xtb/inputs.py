@@ -43,7 +43,7 @@ class CRESTInput(MSONable):
             coords_filename (str): Name of input coordinates file
             constraints (dict): Dictionary of common editable parameters for
                 .constrains file. {"atoms": [List of 1-indexed atoms to fix],
-                "force_constant": float]
+                "force_constant": float].
         """
         self.molecule = molecule
         self.coords_filename = coords_filename
@@ -69,7 +69,7 @@ class CRESTInput(MSONable):
             molecule (Molecule): Molecule the constraints will be performed on
             reference_fnm (str): Name of file containing reference structure in same directory
             constraints (dict): Dictionary of common editable parameters for .constrains file.
-                {"atoms": [List of 1-indexed atoms to fix], "force_constant": float]
+                {"atoms": [List of 1-indexed atoms to fix], "force_constant": float].
 
         Returns:
             str: for .constrains file

@@ -45,7 +45,6 @@ import numpy as np
 from monty.dev import deprecated
 from monty.json import MSONable
 from monty.serialization import loadfn
-
 from pymatgen.analysis.structure_matcher import StructureMatcher
 from pymatgen.core import Element, PeriodicSite, SiteCollection, Species, Structure
 from pymatgen.io.core import InputGenerator
@@ -59,9 +58,8 @@ from pymatgen.util.typing import Kpoint
 if TYPE_CHECKING:
     from typing import Callable, Literal, Union
 
-    from typing_extensions import Self
-
     from pymatgen.util.typing import PathLike, Tuple3Ints, Vector3D
+    from typing_extensions import Self
 
     UserPotcarFunctional = Union[
         Literal["PBE", "PBE_52", "PBE_54", "LDA", "LDA_52", "LDA_54", "PW91", "LDA_US", "PW91_US"], None
@@ -933,7 +931,6 @@ class VaspInputSet(InputGenerator, abc.ABC):
     @property
     def potcar_symbols(self) -> list[str]:
         """List of POTCAR symbols."""
-
         elements = self.poscar.site_symbols
         potcar_symbols = []
         settings = self._config_dict["POTCAR"]
@@ -3028,7 +3025,7 @@ class MPAbsorptionSet(VaspInputSet):
     SUPPORTED_MODES = ("IPA", "RPA")
 
     def __post_init__(self) -> None:
-        """Validate settings"""
+        """Validate settings."""
         super().__post_init__()
         self.mode = self.mode.upper()
         if self.mode not in type(self).SUPPORTED_MODES:
@@ -3195,7 +3192,7 @@ def _get_nedos(vasprun: Vasprun | None, dedos: float) -> int:
 
 
 def auto_kspacing(bandgap: float | None, bandgap_tol: float) -> float:
-    """Set kspacing based on the bandgap"""
+    """Set kspacing based on the bandgap."""
     if bandgap is None or bandgap <= bandgap_tol:  # metallic
         return 0.22
 

@@ -8,14 +8,12 @@ from typing import TYPE_CHECKING
 import numpy as np
 from monty.io import zopen
 from monty.json import MSONable
-
 from pymatgen.core import Lattice, Structure
 from pymatgen.symmetry.kpath import KPathSeek
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
-
     from pymatgen.util.typing import PathLike
+    from typing_extensions import Self
 
 __author__ = "Hanyu Liu"
 __email__ = "domainofbuaa@gmail.com"
@@ -27,7 +25,7 @@ class LineLocator(MSONable):
 
     @staticmethod
     def locate_all_lines(file_path: PathLike, content: str, exclusion: str = "") -> list[int]:
-        """Locate the line in file where a certain paragraph of text is located (return all indices)
+        """Locate the line in file where a certain paragraph of text is located (return all indices).
 
         Args:
             file_path (PathLike): Absolute path to file.
@@ -51,7 +49,7 @@ class ListLocator(MSONable):
 
     @staticmethod
     def locate_all_lines(strs_lst: list[str], content: str, exclusion: str = "") -> list[int]:
-        """Locate the elements in list where a certain paragraph of text is located (return all indices)
+        """Locate the elements in list where a certain paragraph of text is located (return all indices).
 
         Args:
             strs_lst (list[str]): List of strings.
@@ -68,7 +66,7 @@ class ListLocator(MSONable):
 
 
 class ACExtractorBase(ABC):
-    """A parent class of ACExtractor and ACstrExtractor, ensuring that they are as consistent as possible"""
+    """A parent class of ACExtractor and ACstrExtractor, ensuring that they are as consistent as possible."""
 
     @abstractmethod
     def get_n_atoms(self) -> int:
@@ -76,28 +74,28 @@ class ACExtractorBase(ABC):
 
     @abstractmethod
     def get_lattice(self) -> np.ndarray:
-        """Get the lattice of structure defined by atom.config file"""
+        """Get the lattice of structure defined by atom.config file."""
 
     @abstractmethod
     def get_types(self) -> np.ndarray:
-        """Get atomic number of atoms in structure defined by atom.config file"""
+        """Get atomic number of atoms in structure defined by atom.config file."""
 
     @abstractmethod
     def get_coords(self) -> np.ndarray:
-        """Get fractional coordinates of atoms in structure defined by atom.config file"""
+        """Get fractional coordinates of atoms in structure defined by atom.config file."""
 
     @abstractmethod
     def get_magmoms(self) -> np.ndarray:
-        """Get atomic magmoms of atoms in structure defined by atom.config file"""
+        """Get atomic magmoms of atoms in structure defined by atom.config file."""
 
 
 class ACExtractor(ACExtractorBase):
-    """Extract information contained in atom.config : number of atoms, lattice, types, frac_coords, magmoms"""
+    """Extract information contained in atom.config : number of atoms, lattice, types, frac_coords, magmoms."""
 
     def __init__(self, file_path: PathLike) -> None:
-        """Initialization function
+        """Initialization function.
 
-        Args
+        Args:
             file_path (str): The absolute path of atom.config file.
         """
         self.atom_config_path = file_path
@@ -405,7 +403,7 @@ class AtomConfig(MSONable):
 
     @classmethod
     def from_file(cls, filename: PathLike, mag: bool = False) -> Self:
-        """Get a AtomConfig from a file
+        """Get a AtomConfig from a file.
 
         Args:
             filename (PathLike): File name containing AtomConfig data
@@ -468,7 +466,7 @@ class AtomConfig(MSONable):
     def as_dict(self):
         """
         Returns:
-            dict
+            dict.
         """
         return {
             "@module": type(self).__module__,

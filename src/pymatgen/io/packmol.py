@@ -26,7 +26,6 @@ from shutil import which
 from typing import TYPE_CHECKING
 
 import numpy as np
-
 from pymatgen.core import Molecule
 from pymatgen.io.core import InputGenerator, InputSet
 
@@ -41,9 +40,7 @@ __date__ = "Nov 2021"
 
 
 class PackmolSet(InputSet):
-    """
-    InputSet for the Packmol software. This class defines several attributes related to.
-    """
+    """InputSet for the Packmol software. This class defines several attributes related to."""
 
     def run(self, path: PathLike, timeout=30):
         """Run packmol and write out the packed structure.

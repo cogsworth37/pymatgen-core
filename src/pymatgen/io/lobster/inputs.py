@@ -22,7 +22,6 @@ import spglib
 from monty.io import zopen
 from monty.json import MSONable
 from monty.serialization import loadfn
-
 from pymatgen.core.structure import Structure
 from pymatgen.io.vasp import Vasprun
 from pymatgen.io.vasp.inputs import Incar, Kpoints, Potcar
@@ -32,10 +31,9 @@ from pymatgen.util.due import Doi, due
 if TYPE_CHECKING:
     from typing import Any, ClassVar, Literal
 
-    from typing_extensions import Self
-
     from pymatgen.core.composition import Composition
     from pymatgen.util.typing import PathLike, Tuple3Ints
+    from typing_extensions import Self
 
 MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -264,7 +262,7 @@ class Lobsterin(UserDict, MSONable):
                         file.write(f"{type(self).LIST_KEYWORDS[key]} {value}\n")
 
     def as_dict(self) -> dict:
-        """MSONable dict"""
+        """MSONable dict."""
         dct = dict(self)
         dct["@module"] = type(self).__module__
         dct["@class"] = type(self).__name__
@@ -686,7 +684,6 @@ class Lobsterin(UserDict, MSONable):
         Returns:
             Lobsterin with standard settings
         """
-
         warnings.warn(
             "Always check and test the provided basis functions. The spilling of your Lobster calculation might help"
         )

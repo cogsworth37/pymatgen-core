@@ -31,23 +31,21 @@ from monty.json import MontyDecoder, MSONable
 from monty.os import cd
 from monty.os.path import zpath
 from monty.serialization import dumpfn, loadfn
-from tabulate import tabulate
-
 from pymatgen.core import SETTINGS, Element, Lattice, Structure, get_el_sp
 from pymatgen.electronic_structure.core import Magmom
 from pymatgen.util.io_utils import clean_lines
 from pymatgen.util.string import str_delimited
 from pymatgen.util.typing import Kpoint, Tuple3Floats, Tuple3Ints, Vector3D
+from tabulate import tabulate
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
     from typing import Any, ClassVar, Literal
 
     from numpy.typing import ArrayLike
-    from typing_extensions import Self
-
     from pymatgen.symmetry.bandstructure import HighSymmKpath
     from pymatgen.util.typing import PathLike
+    from typing_extensions import Self
 
 
 __author__ = "Shyue Ping Ong, Geoffroy Hautier, Rickard Armiento, Vincent L Chevrier, Stephen Dacek"
@@ -768,7 +766,7 @@ class Incar(dict, MSONable):
     def from_dict(cls, dct: dict[str, Any]) -> Self:
         """
         Args:
-            dct (dict): Serialized Incar
+            dct (dict): Serialized Incar.
 
         Returns:
             Incar
@@ -1062,7 +1060,7 @@ class KpointsSupportedModes(Enum):
     def from_str(cls, mode: str) -> Self:
         """
         Args:
-            mode: String
+            mode: String.
 
         Returns:
             Kpoints_supported_modes
@@ -1187,9 +1185,7 @@ class Kpoints(MSONable):
 
     @property
     def kpts(self) -> Sequence[Kpoint]:
-        """
-        A sequence of Kpoints, where each Kpoint is a tuple of 3 or 1.
-        """
+        """A sequence of Kpoints, where each Kpoint is a tuple of 3 or 1."""
         if all(isinstance(kpt, (list, tuple, np.ndarray)) and len(kpt) in {1, 3} for kpt in self._kpts):
             return cast(Sequence[Kpoint], list(map(tuple, self._kpts)))  # type: ignore[arg-type]
 
@@ -1202,7 +1198,7 @@ class Kpoints(MSONable):
     def kpts(self, kpts: Sequence[float | int] | Sequence[Sequence[float | int]]) -> None:
         """
         Args:
-            kpts: Sequence[float | int] | Sequence[Sequence[float | int]]
+            kpts: Sequence[float | int] | Sequence[Sequence[float | int]].
         """
         self._kpts = kpts
 
@@ -2088,7 +2084,7 @@ class PotcarSingle:
                     "header": dict[float],
                     "data": dict[float],
                 },
-            }
+            }.
 
         Rationale:
             Each POTCAR is structured as
@@ -2115,7 +2111,6 @@ class PotcarSingle:
 
             tol is then used to match statistical values within a tolerance
         """
-
         possible_potcar_matches = []
         # Some POTCARs have an LEXCH (functional used to generate the POTCAR)
         # with the expected functional, e.g. the C_d POTCAR for PBE is actually an
@@ -2618,7 +2613,7 @@ class Potcar(list, MSONable):
 
     def __iter__(self) -> Iterator[PotcarSingle]:
         """Boilerplate code. Only here to supply type hint so
-        `for psingle in Potcar()` is correctly inferred as PotcarSingle
+        `for psingle in Potcar()` is correctly inferred as PotcarSingle.
         """
         return super().__iter__()
 

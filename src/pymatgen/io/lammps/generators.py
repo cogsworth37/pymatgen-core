@@ -15,7 +15,6 @@ from dataclasses import dataclass, field
 from string import Template
 
 from monty.io import zopen
-
 from pymatgen.core import Structure
 from pymatgen.io.core import InputGenerator
 from pymatgen.io.lammps.data import CombinedData, LammpsData
@@ -111,7 +110,7 @@ class LammpsMinimization(BaseLammpsGenerator):
         force_field: str = "Unspecified force field!",
         keep_stages: bool = False,
     ) -> None:
-        """
+        r"""
         Args:
             template: Path (string) to the template file used to create the InputFile for LAMMPS.
             units: units to be used for the LAMMPS calculation (see LAMMPS docs).

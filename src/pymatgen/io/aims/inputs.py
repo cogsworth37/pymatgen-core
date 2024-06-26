@@ -17,16 +17,14 @@ import numpy as np
 from monty.io import zopen
 from monty.json import MontyDecoder, MSONable
 from monty.os.path import zpath
-
 from pymatgen.core import SETTINGS, Element, Lattice, Molecule, Structure
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing import Any
 
-    from typing_extensions import Self
-
     from pymatgen.util.typing import Tuple3Floats, Tuple3Ints
+    from typing_extensions import Self
 
 __author__ = "Thomas A. R. Purcell"
 __version__ = "1.0"
@@ -36,7 +34,7 @@ __date__ = "November 2023"
 
 @dataclass
 class AimsGeometryIn(MSONable):
-    """Representation of an aims geometry.in file
+    """Representation of an aims geometry.in file.
 
     Attributes:
         _content (str): The content of the input file
@@ -49,7 +47,7 @@ class AimsGeometryIn(MSONable):
 
     @classmethod
     def from_str(cls, contents: str) -> Self:
-        """Create an input from the content of an input file
+        """Create an input from the content of an input file.
 
         Args:
             contents (str): The content of the file
@@ -150,16 +148,16 @@ class AimsGeometryIn(MSONable):
 
     @property
     def structure(self) -> Structure | Molecule:
-        """Access structure for the file"""
+        """Access structure for the file."""
         return self._structure
 
     @property
     def content(self) -> str:
-        """Access the contents of the file"""
+        """Access the contents of the file."""
         return self._content
 
     def write_file(self, directory: str | Path | None = None, overwrite: bool = False) -> None:
-        """Write the geometry.in file
+        """Write the geometry.in file.
 
         Args:
             directory (str | Path | None): The directory to write the geometry.in file
@@ -234,7 +232,7 @@ ALLOWED_AIMS_CUBE_FORMATS = (
 
 @dataclass
 class AimsCube(MSONable):
-    """The FHI-aims cubes
+    """The FHI-aims cubes.
 
     Attributes:
         type (str): The value to be outputted as a cube file
@@ -265,7 +263,7 @@ class AimsCube(MSONable):
     elf_type: int | None = None
 
     def __eq__(self, other: object) -> bool:
-        """Check if two cubes are equal to each other"""
+        """Check if two cubes are equal to each other."""
         if not isinstance(other, AimsCube):
             return NotImplemented
 
@@ -296,7 +294,7 @@ class AimsCube(MSONable):
         return self.elf_type == other.elf_type
 
     def __post_init__(self) -> None:
-        """Check the inputted variables to make sure they are correct
+        """Check the inputted variables to make sure they are correct.
 
         Raises:
             ValueError: If any of the inputs is invalid
@@ -337,7 +335,7 @@ class AimsCube(MSONable):
 
     @property
     def control_block(self) -> str:
-        """The block of text for the control.in file of the Cube"""
+        """The block of text for the control.in file of the Cube."""
         cb = f"output cube {self.type}\n"
         cb += f"    cube origin {self.origin[0]: .12e} {self.origin[1]: .12e} {self.origin[2]: .12e}\n"
         for idx in range(3):
@@ -401,11 +399,11 @@ class AimsControlIn(MSONable):
     _parameters: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        """Initialize the output list of _parameters"""
+        """Initialize the output list of _parameters."""
         self._parameters.setdefault("output", [])
 
     def __getitem__(self, key: str) -> Any:
-        """Get an input parameter
+        """Get an input parameter.
 
         Args:
             key (str): The parameter to get
@@ -421,7 +419,7 @@ class AimsControlIn(MSONable):
         return self._parameters[key]
 
     def __setitem__(self, key: str, value: Any) -> None:
-        """Set an attribute of the class
+        """Set an attribute of the class.
 
         Args:
             key (str): The parameter to get
@@ -435,7 +433,7 @@ class AimsControlIn(MSONable):
             self._parameters[key] = value
 
     def __delitem__(self, key: str) -> Any:
-        """Delete a parameter from the input object
+        """Delete a parameter from the input object.
 
         Args:
         key (str): The key in the parameter to remove
@@ -448,12 +446,12 @@ class AimsControlIn(MSONable):
 
     @property
     def parameters(self) -> dict[str, Any]:
-        """The dictionary of input parameters for control.in"""
+        """The dictionary of input parameters for control.in."""
         return self._parameters
 
     @parameters.setter
     def parameters(self, parameters: dict[str, Any]) -> None:
-        """Reset a control.in inputs from a parameters dictionary
+        """Reset a control.in inputs from a parameters dictionary.
 
         Args:
             parameters (dict[str, Any]): The new set of parameters to use
@@ -462,7 +460,7 @@ class AimsControlIn(MSONable):
         self._parameters.setdefault("output", [])
 
     def get_aims_control_parameter_str(self, key: str, value: Any, fmt: str) -> str:
-        """Get the string needed to add a parameter to the control.in file
+        """Get the string needed to add a parameter to the control.in file.
 
         Args:
             key (str): The name of the input flag
@@ -479,7 +477,7 @@ class AimsControlIn(MSONable):
     def get_content(
         self, structure: Structure | Molecule, verbose_header: bool = False, directory: str | Path | None = None
     ) -> str:
-        """Get the content of the file
+        """Get the content of the file.
 
         Args:
             structure (Structure | Molecule): The structure to write the input
@@ -559,7 +557,7 @@ class AimsControlIn(MSONable):
         verbose_header: bool = False,
         overwrite: bool = False,
     ) -> None:
-        """Write the control.in file
+        """Write the control.in file.
 
         Args:
             structure (Structure | Molecule): The structure to write the input
@@ -595,7 +593,7 @@ class AimsControlIn(MSONable):
             file.write(content)
 
     def get_species_block(self, structure: Structure | Molecule, basis_set: str | dict[str, str]) -> str:
-        """Get the basis set information for a structure
+        """Get the basis set information for a structure.
 
         Args:
             structure (Molecule or Structure): The structure to get the basis set information for
@@ -643,7 +641,7 @@ class AimsSpeciesFile:
         """
         Args:
             data (str): A string of the complete species defaults file
-            label (str): A string representing the name of species
+            label (str): A string representing the name of species.
         """
         self.data = data
         self.label = label
@@ -710,7 +708,7 @@ class AimsSpeciesFile:
         )
 
     def __str__(self):
-        """String representation of the species' defaults file"""
+        """String representation of the species' defaults file."""
         return re.sub(r"^ *species +\w+", f"  species        {self.label}", self.data, flags=re.MULTILINE)
 
     @property
@@ -726,13 +724,13 @@ class AimsSpeciesFile:
 
     @classmethod
     def from_dict(cls, dct: dict[str, Any]) -> AimsSpeciesFile:
-        """Deserialization of the AimsSpeciesFile object"""
+        """Deserialization of the AimsSpeciesFile object."""
         return AimsSpeciesFile(data=dct["data"], label=dct["label"])
 
 
 class SpeciesDefaults(list, MSONable):
     """A list containing a set of species' defaults objects with
-    methods to read and write them to files
+    methods to read and write them to files.
     """
 
     def __init__(
@@ -764,7 +762,7 @@ class SpeciesDefaults(list, MSONable):
         self._set_species()
 
     def _set_species(self) -> None:
-        """Initialize species defaults from the instance data"""
+        """Initialize species defaults from the instance data."""
         del self[:]
 
         for label in self.labels:
@@ -778,7 +776,7 @@ class SpeciesDefaults(list, MSONable):
             self.append(AimsSpeciesFile.from_element_and_basis_name(el, basis_set, label=label))
 
     def __str__(self):
-        """String representation of the species' defaults"""
+        """String representation of the species' defaults."""
         return "".join([str(x) for x in self])
 
     @classmethod
@@ -797,7 +795,7 @@ class SpeciesDefaults(list, MSONable):
         return SpeciesDefaults(labels, basis_set, elements=elements)
 
     def to_dict(self):
-        """Dictionary representation of the species' defaults"""
+        """Dictionary representation of the species' defaults."""
         return {
             "labels": self.labels,
             "elements": self.elements,
@@ -808,5 +806,5 @@ class SpeciesDefaults(list, MSONable):
 
     @classmethod
     def from_dict(cls, dct: dict[str, Any]) -> SpeciesDefaults:
-        """Deserialization of the SpeciesDefaults object"""
+        """Deserialization of the SpeciesDefaults object."""
         return SpeciesDefaults(dct["labels"], dct["basis_set"], elements=dct["elements"])

@@ -17,7 +17,6 @@ import pandas as pd
 from monty.io import zopen
 from monty.json import MSONable, jsanitize
 from monty.re import regrep
-
 from pymatgen.core.structure import Molecule, Structure
 from pymatgen.core.units import Ha_to_eV
 from pymatgen.electronic_structure.bandstructure import BandStructure, BandStructureSymmLine
@@ -662,9 +661,7 @@ class Cp2kOutput:
         self.data["QS"]["Multi_grid_cutoffs_[a.u.]"] = tmp
 
     def parse_overlap_condition(self):
-        """
-        Retrieve the overlap condition number
-        """
+        """Retrieve the overlap condition number."""
         overlap_condition = re.compile(r"\|A\|\*\|A\^-1\|.+=\s+(-?\d+\.\d+E[+\-]?\d+)\s+Log")
         self.read_pattern(
             {"overlap_condition_number": overlap_condition},
@@ -929,7 +926,7 @@ class Cp2kOutput:
         )
 
     def parse_mulliken(self):
-        """Parse the mulliken population analysis info for each step"""
+        """Parse the mulliken population analysis info for each step."""
         header = r"Mulliken Population Analysis.+Net charge"
         pattern = r"\s+(\d)\s+(\w+)\s+(\d+)\s+(-?\d+\.\d+)\s+(-?\d+\.\d+)"
         footer = r".+Total charge"
@@ -1461,7 +1458,7 @@ class Cp2kOutput:
 
     @staticmethod
     def _gauss_smear(densities, energies, npts, width):
-        """Return a gaussian smeared DOS"""
+        """Return a gaussian smeared DOS."""
         if not width:
             return densities
 
