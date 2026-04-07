@@ -14,11 +14,20 @@ entries, such as grouping entries by structure.
 from __future__ import annotations
 
 import abc
+import collections
+import collections.abc
+import csv
+import itertools
 import json
+import logging
 import math
+import multiprocessing as mp
 import os
+import re
 import warnings
 from abc import ABC, abstractmethod
+from collections import defaultdict
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING, cast
 
 import numpy as np
@@ -26,34 +35,19 @@ import orjson
 from monty.json import MontyDecoder, MontyEncoder, MSONable
 from uncertainties import ufloat
 
+from pymatgen.core.structure_matcher import SpeciesComparator, StructureMatcher
+
 from .composition import Composition
 from .periodic_table import Element
-
-import collections
-import collections.abc
-import csv
-import itertools
-import json
-import logging
-import multiprocessing as mp
-import re
-from collections import defaultdict
-from datetime import UTC, datetime
-from typing import TYPE_CHECKING
-
-from monty.json import MontyDecoder, MontyEncoder, MSONable
-
-
-from pymatgen.core import Composition, Element
-from pymatgen.core.structure_matcher import SpeciesComparator, StructureMatcher
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
     from typing import Literal, Self
+
+    from pymatgen.analysis.phase_diagram import PDEntry
+    from pymatgen.core import DummySpecies, Species, Structure
     from pymatgen.core.entries import ComputedEntry, ComputedStructureEntry, Entry
     from pymatgen.util.typing import SpeciesLike
-    from pymatgen.analysis.phase_diagram import PDEntry
-    from pymatgen.core import DummySpecies, Element, Species, Structure
 
 logger = logging.getLogger(__name__)
 
